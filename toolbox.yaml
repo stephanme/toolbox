@@ -1,0 +1,39 @@
+# toolbox pod mounting HA pvc + tmp pvc for maintenance of sqlite DB
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: homeassistant # namespace where the pvc's exist
+  name: toolbox
+spec:
+  containers:
+    - name: toolbox
+      image: stephanme/toolbox:latest
+      command:
+        - sh
+        - -c
+        - sleep infinity
+      volumeMounts:
+        - name: data-vol
+          mountPath: /mnt/data
+        # - name: temp-vol
+        #   mountPath: /mnt/temp
+  volumes:
+    - name: data-vol
+      persistentVolumeClaim:
+        readOnly: true  # for initial investigation
+        claimName: homeassistant-pvc
+    # - name: temp-vol
+    #   persistentVolumeClaim:
+    #     claimName: temp-pvc
+  affinity:
+    podAffinity: # colocate with app owning data-vol
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:  
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - homeassistant
+          topologyKey: "kubernetes.io/hostname"

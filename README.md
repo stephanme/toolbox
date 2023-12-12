@@ -17,3 +17,9 @@ docker build --pull --no-cache -t stephanme/toolbox .
 ```
 docker run -it stephanme/toolbox
 ```
+
+Attach to a pod for debugging:
+```
+kubectl debug --namespace <namespace> -it <pod> --image stephanme/toolbox --target=<container>  --share-processes
+```
+or use example `toolbox.yaml` to deploy a toolbox to k8s, e.g. to check home assistant sqlite DB.
