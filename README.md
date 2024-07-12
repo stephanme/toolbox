@@ -7,19 +7,19 @@ Useful for debugging or k8s jobs.
 ## Build
 
 ```
-docker build -t stephanme/toolbox .
+docker build -t ghcr.io/stephanme/toolbox .
 # full rebuild (update base image and chrome)
-docker build --pull --no-cache -t stephanme/toolbox .
+docker build --pull --no-cache -t ghcr.io/stephanme/toolbox .
 ```
 
 ## Usage
 
 ```
-docker run -it stephanme/toolbox
+docker run -it ghcr.io/stephanme/toolbox
 ```
 
 Attach to a pod for debugging:
 ```
-kubectl debug --namespace <namespace> -it <pod> --image stephanme/toolbox --target=<container>  --share-processes
+kubectl debug --namespace <namespace> -it <pod> --image ghcr.io/stephanme/toolbox --target=<container>  --share-processes
 ```
 or use example `toolbox.yaml` to deploy a toolbox to k8s, e.g. to check home assistant sqlite DB.
