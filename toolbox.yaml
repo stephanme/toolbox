@@ -15,16 +15,16 @@ spec:
       volumeMounts:
         - name: data-vol
           mountPath: /mnt/data
-        # - name: temp-vol
-        #   mountPath: /mnt/temp
+        - name: temp-vol
+          mountPath: /mnt/temp
   volumes:
     - name: data-vol
       persistentVolumeClaim:
         readOnly: true  # for initial investigation
         claimName: homeassistant-pvc
-    # - name: temp-vol
-    #   persistentVolumeClaim:
-    #     claimName: temp-pvc
+    - name: temp-vol
+      persistentVolumeClaim:
+        claimName: temp-pvc
   affinity:
     podAffinity: # colocate with app owning data-vol
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -37,3 +37,16 @@ spec:
               values:
               - homeassistant
           topologyKey: "kubernetes.io/hostname"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: temp-pvc
+  namespace: homeassistant # namespace where the pvc's exist
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
