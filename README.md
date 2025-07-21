@@ -16,10 +16,11 @@ docker build --pull --no-cache -t ghcr.io/stephanme/toolbox .
 
 ```
 docker run -it ghcr.io/stephanme/toolbox
+kubectl run toolbox --image zot.ghcr.io/stephanme/toolbox --command -- sh -c 'sleep infinity'
 ```
 
 Attach to a pod for debugging:
 ```
-kubectl debug --namespace <namespace> -it <pod> --image ghcr.io/stephanme/toolbox --target=<container>  --share-processes
+kubectl debug --namespace <namespace> -it <pod> --image zot.ghcr.io/stephanme/toolbox --target=<container>  --share-processes
 ```
 or use example `toolbox.yaml` to deploy a toolbox to k8s, e.g. to check home assistant sqlite DB.
