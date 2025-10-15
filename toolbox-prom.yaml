@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  namespace: homeassistant # namespace where the pvc's exist
+  namespace: monitoring # namespace where the pvc's exist
   name: toolbox
 spec:
   containers:
     - name: toolbox
-      image: zot.ghcr.io/stephanme/toolbox:latest
+      image: ghcr.io/stephanme/toolbox:latest
       command:
         - sh
         - -c
@@ -15,16 +15,15 @@ spec:
       volumeMounts:
         - name: data-vol
           mountPath: /mnt/data
-        - name: temp-vol
-          mountPath: /mnt/temp
+        # - name: temp-vol
+        #   mountPath: /mnt/temp
   volumes:
     - name: data-vol
       persistentVolumeClaim:
-        readOnly: true  # for initial investigation
-        claimName: homeassistant-pvc
-    - name: temp-vol
-      persistentVolumeClaim:
-        claimName: temp-pvc
+        claimName: prometheus-prometheus-kube-prometheus-prometheus-db-prometheus-prometheus-kube-prometheus-prometheus-0
+    # - name: temp-vol
+    #   persistentVolumeClaim:
+    #     claimName: temp-pvc
   affinity:
     podAffinity: # colocate with app owning data-vol
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -35,18 +34,5 @@ spec:
             - key: app
               operator: In
               values:
-              - homeassistant
+              - "app.kubernetes.io/instance": prometheus-kube-prometheus-prometheus
           topologyKey: "kubernetes.io/hostname"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: temp-pvc
-  namespace: homeassistant # namespace where the pvc's exist
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 1Gi
