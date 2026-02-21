@@ -1,6 +1,6 @@
 # toolbox
 
-A small alpine based docker image with some additional tools: curl, rsync, jq, sqlite, kopia
+A small alpine based docker image with some additional tools: curl, rsync, jq, sqlite, regctl/sync, kopia, kubectl.
 
 Useful for debugging or k8s jobs.
 
