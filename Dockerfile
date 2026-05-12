@@ -12,7 +12,7 @@ RUN curl -o /usr/local/bin/regctl --fail -sSL https://github.com/regclient/regcl
     chmod a+x /usr/local/bin/regsync
 
 #renovate: datasource=github-releases depName=kopia/kopia
-ARG KOPIA_VERSION=0.22.3
+ARG KOPIA_VERSION=0.23.0
 RUN KOPIA_ARCH=$([ "${TARGETARCH}" = "amd64" ] && echo "x64" || echo "${TARGETARCH}") && \
     curl -o /tmp/kopia.tar.gz --fail -sSL https://github.com/kopia/kopia/releases/download/v${KOPIA_VERSION}/kopia-${KOPIA_VERSION}-${TARGETOS}-${KOPIA_ARCH}.tar.gz && \
     tar -xzf /tmp/kopia.tar.gz -C /tmp && \
